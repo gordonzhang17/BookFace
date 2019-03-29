@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/secondPage.dart';
+import 'package:flutter_app/mainProfileScreen.dart';
+import 'package:flutter_app/appSharedPreferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,9 +25,9 @@ class LoginActivity extends StatefulWidget {
 
 class LoginActivityState extends State<LoginActivity> {
   TextEditingController _userNameTextEditingController =
-  new TextEditingController();
+      new TextEditingController();
   TextEditingController _passwordTextEditingController =
-  new TextEditingController();
+      new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +46,27 @@ class LoginActivityState extends State<LoginActivity> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: new EdgeInsets.all(10.0),
+            padding: new EdgeInsets.all(5.0),
           ),
           Container(
-            height: 200.0,
-            width: 200.0,
+            height: 225.0,
+            width: 400.0,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/NYC.jpg')),
+                  image: AssetImage('assets/NYC.jpg'),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
           Padding(
-            padding: new EdgeInsets.all(10.0),
+            padding: new EdgeInsets.all(5.0),
           ),
           Center(
             child: Container(
-              height: 100.0,
-              width: MediaQuery.of(context).size.width - 100.0,
+              height: 75.0,
+              width: MediaQuery.of(context).size.width - 50.0,
               child: Text(
                 'Welcome to BookFace, a social media application!',
                 textAlign: TextAlign.center,
@@ -76,7 +79,7 @@ class LoginActivityState extends State<LoginActivity> {
             ),
           ),
           Padding(
-            padding: new EdgeInsets.all(10.0),
+            padding: new EdgeInsets.all(5.0),
           ),
           Container(
             width: MediaQuery.of(context).size.width - 100.0,
@@ -111,13 +114,13 @@ class LoginActivityState extends State<LoginActivity> {
             padding: new EdgeInsets.all(10.0),
           ),
           Container(
-            margin: const EdgeInsets.all(20.0),
+            margin: const EdgeInsets.all(5.0),
             child: RaisedButton(
               child: const Text('Log in'),
               color: Colors.black,
               textColor: Colors.white,
               padding: const EdgeInsets.all(5.0),
-              onPressed: _checkUserAndPassword,
+              onPressed: _saveUsernameAndPasswordAndProceed,
               textTheme: ButtonTextTheme.primary,
             ),
           ),
@@ -126,19 +129,17 @@ class LoginActivityState extends State<LoginActivity> {
     );
   }
 
-  void _checkUserAndPassword() {
+  void _saveUsernameAndPasswordAndProceed() {
     String userName = _userNameTextEditingController.text;
     String password = _passwordTextEditingController.text;
 
-    if (userName == "" && password == "") {
-      Navigator.push(
-        context,
-        new CupertinoPageRoute (
-            builder: (context) => SecondScreen()),
-      );
-    } else {
-      //show input error
-    }
+    AppSharedPreferences().setLoggedInUsername(userName);
+    AppSharedPreferences().setLoggedInPassword(password);
+
+    Navigator.push(
+      context,
+      new CupertinoPageRoute(builder: (context) => SecondScreen()),
+    );
   }
 }
 

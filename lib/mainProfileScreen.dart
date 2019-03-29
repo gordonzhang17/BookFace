@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/BookFaceUserProfile.dart';
 import 'package:flutter_app/bookFaceUser.dart';
+import 'package:flutter_app/appSharedPreferences.dart';
 
 class SecondScreen extends StatelessWidget {
   @override
@@ -23,37 +24,33 @@ class SecondPageActivity extends StatefulWidget {
 class SecondPageState extends State<SecondPageActivity> {
   final _bookFaceUsers = <BookFaceUser>[];
 
+  double width;
+  double height;
+
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: _buildPage(),
     );
   }
 
   Widget _buildPage() {
-    double width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double height = MediaQuery
-        .of(context)
-        .size
-        .height;
-
     return Column(
       children: <Widget>[
         Padding(
           padding: new EdgeInsets.all(15.0),
         ),
-        Container(
-          //title
-          child: Text(
-            "See your friend's profiles here!",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
-          ),
+        FutureBuilder<String>(
+          future: AppSharedPreferences().getLoggedInUsername(),
+          initialData: "User",
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            return snapshot.hasData
+                ? _buildUsernameContainer(snapshot.data)
+                : Container();
+          },
         ),
         Padding(
           padding: new EdgeInsets.all(30.0),
@@ -81,12 +78,29 @@ class SecondPageState extends State<SecondPageActivity> {
           onPressed: () {
             Navigator.push(
               context,
-              new CupertinoPageRoute (
-                  builder: (context) => CurrentLoggedInUserProfile()),
+              new CupertinoPageRoute(
+                  builder: (context) => BookFaceUserProfile()),
             );
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildUsernameContainer(String username) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.greenAccent,
+      ),
+      width: width,
+      height: 40.0,
+      child: Text(
+        "Welcome, " + username + "!",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25.0,
+        ),
+      ),
     );
   }
 
@@ -106,51 +120,45 @@ class SecondPageState extends State<SecondPageActivity> {
 
   Widget _buildProfileCell(BookFaceUser bookFaceUser) {
     return new GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            new CupertinoPageRoute (
-                builder: (context) => BookFaceUserProfile(bookFaceUser: bookFaceUser),
-            ),
-          );
-        },
-        child: Card(
-          elevation: 8.0,
-          color: Colors.lightBlue[50],
-          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  bookFaceUser.getFirstName() + " " +
-                      bookFaceUser.getLastName(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  "Favourite Sport: " + bookFaceUser.getFavouriteSport(),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  bookFaceUser.getProfileQuote(),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  bookFaceUser.getStatus().toString(),
-                ),
-              ),
-            ],
+      onTap: () {
+        Navigator.push(
+          context,
+          new CupertinoPageRoute(
+            builder: (context) =>
+                BookFaceUserProfile(bookFaceUser: bookFaceUser),
           ),
         );
+      },
+      child: Card(
+        elevation: 8.0,
+        color: Colors.lightBlue[50],
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                bookFaceUser.getFirstName() + " " + bookFaceUser.getLastName(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                "Favourite Sport: " + bookFaceUser.getFavouriteSport(),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                bookFaceUser.getStatus().toString(),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

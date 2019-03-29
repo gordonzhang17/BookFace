@@ -1,6 +1,6 @@
 import 'package:faker/faker.dart';
 import "dart:math";
-import 'package:english_words/english_words.dart';
+import 'package:flutter/material.dart';
 
 enum Status {
   online,
@@ -12,10 +12,10 @@ class BookFaceUser {
   String lastName;
   String favouriteSport;
   Status status;
-  String profileQuote;
+  Color color;
 
   BookFaceUser(this.firstName, this.lastName, this.favouriteSport, this.status,
-      this.profileQuote);
+      this.color);
 
   String getFirstName() {
     return firstName;
@@ -33,8 +33,8 @@ class BookFaceUser {
     return status;
   }
 
-  String getProfileQuote() {
-    return profileQuote;
+  Color getFavouriteColour() {
+    return color;
   }
 }
 
@@ -48,16 +48,14 @@ List<BookFaceUser> generateBookFacePosts(int numberPostsToGenerate) {
 
     final _random = new Random();
     Status randomStatus = statuses[_random.nextInt(statuses.length)];
-    String randomSentence = generateWordPairs().take(1).toString() +
-        " " +
-        generateWordPairs().take(1).toString();
+    Color randomColor = Color.fromARGB(_random.nextInt(256), _random.nextInt(256), _random.nextInt(256), _random.nextInt(256));
 
     bookFaceUsers.add(new BookFaceUser(
         faker.person.firstName(),
         faker.person.lastName(),
         faker.sport.name(),
         randomStatus,
-        randomSentence));
+        randomColor));
   }
 
   return bookFaceUsers;
