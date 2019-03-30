@@ -34,7 +34,7 @@ class LoginActivityState extends State<LoginActivity> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        title: Text("BookFace Log In Screen"),
+        title: Text("BookFace"),
       ),
       body: _buildUserAndPasswordInputs(),
     );
@@ -42,72 +42,76 @@ class LoginActivityState extends State<LoginActivity> {
 
   Widget _buildUserAndPasswordInputs() {
     return Container(
+      color: Colors.cyan,
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: new EdgeInsets.all(5.0),
-          ),
-          Container(
-            height: 225.0,
-            width: 400.0,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/NYC.jpg'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: new EdgeInsets.all(5.0),
+            padding: new EdgeInsets.all(10.0),
           ),
           Center(
             child: Container(
               height: 75.0,
-              width: MediaQuery.of(context).size.width - 50.0,
               child: Text(
-                'Welcome to BookFace, a social media application!',
+                'Welcome!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  backgroundColor: Colors.black,
-                  fontSize: 30.0,
+                  fontSize: 40.0,
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: new EdgeInsets.all(5.0),
-          ),
           Container(
-            width: MediaQuery.of(context).size.width - 100.0,
-            child: TextFormField(
-              controller: _userNameTextEditingController,
-              keyboardType: TextInputType.text,
-              decoration: new InputDecoration(
-                hintText: 'Enter your BookFace User Name',
-                labelText: 'BookFace User Name',
-                contentPadding: const EdgeInsets.all(10.0),
-              ),
+            constraints: BoxConstraints(
+              maxHeight: 250.0,
+              maxWidth: 300.0,
+              minHeight: 250.0,
+              minWidth: 300.0,
             ),
-          ),
-          Padding(
-            padding: new EdgeInsets.all(10.0),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width - 100.0,
-            child: TextFormField(
-              controller: _passwordTextEditingController,
-              keyboardType: TextInputType.text,
-              //obscure text == true makes text hidden
-              obscureText: true,
-              decoration: new InputDecoration(
-                hintText: 'Enter your BookFace password',
-                labelText: 'BookFace Password',
-                contentPadding: const EdgeInsets.all(10.0),
-              ),
+            color: Colors.grey,
+            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: new EdgeInsets.all(10.0),
+                ),
+                Container(
+                  child: TextFormField(
+                    style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    controller: _userNameTextEditingController,
+                    keyboardType: TextInputType.text,
+                    decoration: new InputDecoration(
+                      hintStyle: TextStyle(fontSize: 20.0, color: Colors.black),
+                      labelStyle:
+                          TextStyle(fontSize: 20.0, color: Colors.black),
+                      hintText: 'Enter your BookFace User Name',
+                      labelText: 'BookFace User Name',
+                      contentPadding: const EdgeInsets.all(10.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: new EdgeInsets.all(10.0),
+                ),
+                Container(
+                  child: TextFormField(
+                    style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    controller: _passwordTextEditingController,
+                    keyboardType: TextInputType.text,
+                    //obscure text == true makes text hidden
+                    obscureText: true,
+                    decoration: new InputDecoration(
+                      hintText: 'Enter your BookFace password',
+                      labelText: 'BookFace Password',
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintStyle: TextStyle(fontSize: 20.0, color: Colors.black),
+                      labelStyle:
+                          TextStyle(fontSize: 20.0, color: Colors.black),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(

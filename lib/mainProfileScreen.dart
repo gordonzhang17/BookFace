@@ -38,52 +38,60 @@ class SecondPageState extends State<SecondPageActivity> {
   }
 
   Widget _buildPage() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: new EdgeInsets.all(15.0),
-        ),
-        FutureBuilder<String>(
-          future: AppSharedPreferences().getLoggedInUsername(),
-          initialData: "User",
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            return snapshot.hasData
-                ? _buildUsernameContainer(snapshot.data)
-                : Container();
-          },
-        ),
-        Padding(
-          padding: new EdgeInsets.all(30.0),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Container(
-              width: width,
-              height: height / 2,
-              child: _buildPosts(),
+    return Container(
+      color: Colors.cyan,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: new EdgeInsets.all(15.0),
+          ),
+          FutureBuilder<String>(
+            future: AppSharedPreferences().getLoggedInUsername(),
+            initialData: "User",
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return snapshot.hasData
+                  ? _buildUsernameContainer(snapshot.data)
+                  : Container();
+            },
+          ),
+          Padding(
+            padding: new EdgeInsets.all(20.0),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                width: width,
+                height: height / 2,
+                child: _buildPosts(),
+              ),
+            ],
+          ),
+          Padding(
+            padding: new EdgeInsets.all(30.0),
+          ),
+          RaisedButton(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+                "Go To Profile",
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
-          ],
-        ),
-        Padding(
-          padding: new EdgeInsets.all(30.0),
-        ),
-        RaisedButton(
-          padding: EdgeInsets.all(5.0),
-          child: Text("Go To Profile"),
-          color: Colors.cyan,
-          splashColor: Colors.deepOrange,
-          onPressed: () {
-            Navigator.push(
-              context,
-              new CupertinoPageRoute(
-                  builder: (context) => BookFaceUserProfile()),
-            );
-          },
-        ),
-      ],
+            color: Colors.black,
+            splashColor: Colors.deepOrange,
+            onPressed: () {
+              Navigator.push(
+                context,
+                new CupertinoPageRoute(
+                    builder: (context) => BookFaceUserProfile()),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -93,9 +101,10 @@ class SecondPageState extends State<SecondPageActivity> {
         color: Colors.greenAccent,
       ),
       width: width,
-      height: 40.0,
+      height: 60.0,
       child: Text(
         "Welcome, " + username + "!",
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 25.0,
