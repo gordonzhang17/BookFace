@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/BookFaceUserProfile.dart';
 import 'package:flutter_app/bookFaceUser.dart';
 import 'package:flutter_app/appSharedPreferences.dart';
+import 'package:flutter_app/userProfile.dart';
 
 class SecondScreen extends StatelessWidget {
   @override
@@ -23,6 +23,16 @@ class SecondPageActivity extends StatefulWidget {
 
 class SecondPageState extends State<SecondPageActivity> {
   final _bookFaceUsers = <BookFaceUser>[];
+
+  final List<BookFaceUser> _savedBookFaceUsers = [];
+
+  bool _isSaved(BookFaceUser bookFaceUser) {
+    return _savedBookFaceUsers.contains(bookFaceUser);
+  }
+
+  _saveFavorite(BookFaceUser bookFaceUser) {
+      _savedBookFaceUsers.add(bookFaceUser);
+  }
 
   double width;
   double height;
@@ -75,7 +85,7 @@ class SecondPageState extends State<SecondPageActivity> {
           RaisedButton(
             padding: EdgeInsets.all(5.0),
             child: Text(
-                "Go To Profile",
+              "Go To Profile",
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -85,8 +95,7 @@ class SecondPageState extends State<SecondPageActivity> {
             onPressed: () {
               Navigator.push(
                 context,
-                new CupertinoPageRoute(
-                    builder: (context) => BookFaceUserProfile()),
+                new CupertinoPageRoute(builder: (context) => UserProfile(null)),
               );
             },
           ),
@@ -133,8 +142,7 @@ class SecondPageState extends State<SecondPageActivity> {
         Navigator.push(
           context,
           new CupertinoPageRoute(
-            builder: (context) =>
-                BookFaceUserProfile(bookFaceUser: bookFaceUser),
+            builder: (context) => UserProfile(bookFaceUser),
           ),
         );
       },
@@ -142,28 +150,42 @@ class SecondPageState extends State<SecondPageActivity> {
         elevation: 8.0,
         color: Colors.lightBlue[50],
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        child: Column(
+        child: Row(
           children: <Widget>[
-            Container(
+            FlatButton(
+              onPressed: _saveFavorite(bookFaceUser),
+              color: Colors.orange,
+              child: (_isSaved(bookFaceUser)
+                  ? Icon(Icons.favorite_border)
+                  : Icon(Icons.favorite)),
               padding: EdgeInsets.all(5.0),
-              child: Text(
-                bookFaceUser.getFirstName() + " " + bookFaceUser.getLastName(),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+            ),
+            Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    bookFaceUser.getFirstName() +
+                        " " +
+                        bookFaceUser.getLastName(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              child: Text(
-                "Favourite Sport: " + bookFaceUser.getFavouriteSport(),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5.0),
-              child: Text(
-                bookFaceUser.getStatus().toString(),
-              ),
+                Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "Favourite Sport: " + bookFaceUser.getFavouriteSport(),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    bookFaceUser.getStatus().toString(),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
